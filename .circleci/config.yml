@@ -1,0 +1,73 @@
+version: 2.1
+
+commands:
+  check_system:
+    steps:
+      - run:
+          name: Check system
+          command: df -h && echo "Cores = $(nproc --all)"
+  setup_env:
+    steps:
+      - run:
+          name: Setup environment
+          command: |
+            apt-get --quiet update && apt-get --quiet install git aria2 apt-utils openjdk-8-jdk -y
+            echo "Configuring git"
+            git config --global user.email "$GIT_EMAIL"
+            git config --global user.name "Teguhpunya"
+            git config --global credential.helper "cache --timeout=7200"
+            echo "git identity setup successfully!"
+            git clone https://gitlab.com/teguhpunya-projects/scripts.git --depth=1 --branch circleci
+            bash scripts/setup/android_build_env.sh >/dev/null
+            bash scripts/setup/install_android_sdk.sh >/dev/null
+  setup_repos:
+    steps:
+      - run:
+          name: Setup repos
+          command: |
+            echo "Current dir = $(pwd)"
+            repo init --depth=1 -u https://gitlab.com/OrangeFox/Manifest.git -b fox_9.0
+            repo sync -j$(nproc --all) --force-sync >/dev/null
+            git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b test --depth=1 device/xiaomi/ginkgo
+
+  build:
+    steps:
+      - run:
+          name: Build
+          command: ./device/xiaomi/ginkgo/teskrip.sh
+
+executors:
+  machine-executor:
+    machine:
+      image: ubuntu-2004:202010-01
+
+  docker-executor:
+    docker:
+      - image: ubuntu:focal
+
+jobs:
+  builder:
+    executor: docker-executor
+    working_directory: ~/project
+    environment:
+      DEBIAN_FRONTEND: noninteractive
+      FOX_BRANCH: fox_9.0
+      TWRP_BRANCH: twrp-10.0
+      URL_RECOVERY: https://gitlab.com/OrangeFox/bootable/Recovery.git
+      URL_VENDOR: https://gitlab.com/OrangeFox/vendor/recovery.git
+      MANIFEST_BUILD_DIR: build
+    steps:
+      - checkout
+      - check_system
+      - setup_env
+      - setup_repos
+      - build
+      - store_artifacts:
+          path: out/target/product/ginkgo/OrangeFox-R11.0_1-Test-ginkgo.zip
+          destination: OrangeFox-R11.0_1-Test-ginkgo.zip
+
+workflows:
+  build-orangefox:
+    jobs:
+      - builder:
+          context: orangefox
