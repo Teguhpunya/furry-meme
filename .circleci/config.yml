@@ -1,0 +1,38 @@
+version: 2.1
+workflows:
+  orangefox:
+    jobs:
+      - build:
+          context: orangefox
+
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: cimg/android:29.0.0
+    environment:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+      - checkout
+      - run:
+          name: Check storage
+          command: df -h
+      - run:
+          name: Setup environment
+          command: |
+            DEBIAN_FRONTEND=noninteractive apt-get --quiet update && apt-get --quiet install git aria2 apt-utils -y
+            git clone https://gitlab.com/teguhpunya-projects/scripts.git --depth=1 --branch circleci
+            bash scripts/setup/android_build_env.sh >/dev/null
+            bash scripts/setup/install_android_sdk.sh >/dev/null
+      - run:
+          name: Clone
+          command: |
+            repo init --depth=1 -u https://gitlab.com/Teguhpunya/Manifest.git -b fox_9.0
+            repo sync -j$(nproc --all) --force-sync
+            git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b test --depth=1 device/xiaomi/ginkgo
+      - run:
+          name: Build
+          command: ./device/xiaomi/ginkgo/teskrip.sh
+      - store_artifacts:
+          path: out/target/product/ginkgo/OrangeFox-R11.0_1-Test-ginkgo.zip
+          destination: OrangeFox-R11.0_1-Test-ginkgo.zip
