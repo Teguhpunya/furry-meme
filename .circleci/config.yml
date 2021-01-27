@@ -13,8 +13,8 @@ commands:
           command: |
             sudo apt-get --quiet update && sudo apt-get --quiet install git aria2 apt-utils -y
             echo "Configuring git"
-            git config --global user.email "mpusfurrher@gmail.com"
-            git config --global user.name "Mpusfurrher"
+            git config --global user.email "$GIT_EMAIL"
+            git config --global user.name "Teguhpunya"
             git config --global credential.helper "cache --timeout=7200"
             echo "git identity setup successfully!"
             git clone https://gitlab.com/teguhpunya-projects/scripts.git --depth=1 --branch circleci
@@ -38,7 +38,7 @@ commands:
             rm -rf vendor/recovery
             git clone --depth=1 $URL_RECOVERY -b $FOX_10_BRANCH bootable/recovery >/dev/null
             git clone --depth=1 $URL_VENDOR -b $FOX_10_BRANCH vendor/recovery >/dev/null
-            git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b a10 --depth=1 device/xiaomi/ginkgo
+            git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b a10-test --depth=1 device/xiaomi/ginkgo
   build:
     steps:
       - run:
