@@ -36,7 +36,7 @@ commands:
             cd .. && echo "Current dir = $(pwd)"
             rm -rf bootable/recovery
             rm -rf vendor/recovery
-            git clone --depth=1 $URL_RECOVERY -b $RECOVERY_BRANCH bootable/recovery >/dev/null
+            git clone --depth=1 https://pop:$GITLAB_PASS@gitlab.com/OrangeFox/Testing/Recovery.git -b $RECOVERY_BRANCH bootable/recovery >/dev/null
             git clone --depth=1 $URL_VENDOR -b $VENDOR_BRANCH vendor/recovery >/dev/null
             git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b a10 --depth=1 device/xiaomi/ginkgo
   build:
