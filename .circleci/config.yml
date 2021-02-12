@@ -34,7 +34,11 @@ commands:
     steps:
       - run:
           name: Build
-          command: ./device/xiaomi/ginkgo/teskrip.sh
+          command: |
+            ./device/xiaomi/ginkgo/teskrip.sh
+            BUILDFILE=$(find $(pwd)/out/target/product/ginkgo/OrangeFox* 2>/dev/null)
+            UPLOAD_PATH=$(pwd)/out/target/product/ginkgo/upload/
+            mkdir $UPLOAD_PATH && cp $BUILDFILE $UPLOAD_PATH
 
 executors:
   machine-executor:
@@ -52,10 +56,6 @@ jobs:
     environment:
       DEBIAN_FRONTEND: noninteractive
       FOX_BRANCH: fox_9.0
-      TWRP_BRANCH: twrp-10.0
-      URL_RECOVERY: https://gitlab.com/OrangeFox/bootable/Recovery.git
-      URL_VENDOR: https://gitlab.com/OrangeFox/vendor/recovery.git
-      MANIFEST_BUILD_DIR: build
     steps:
       - checkout
       - check_system
@@ -63,8 +63,7 @@ jobs:
       - setup_repos
       - build
       - store_artifacts:
-          path: out/target/product/ginkgo/OrangeFox-R11.0_1-Test-ginkgo.zip
-          destination: OrangeFox-R11.0_1-Test-ginkgo.zip
+          path: out/target/product/ginkgo/upload/
 
 workflows:
   build-orangefox:
