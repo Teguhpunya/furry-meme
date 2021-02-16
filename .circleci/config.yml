@@ -43,7 +43,11 @@ commands:
     steps:
       - run:
           name: Build
-          command: ./device/xiaomi/ginkgo/teskrip.sh
+          command: |
+            ./device/xiaomi/ginkgo/teskrip.sh
+            BUILDFILE=$(find $(pwd)/out/target/product/ginkgo/OrangeFox* 2>/dev/null)
+            UPLOAD_PATH=$(pwd)/out/target/product/ginkgo/upload/
+            mkdir $UPLOAD_PATH && cp $BUILDFILE $UPLOAD_PATH
 
 executors:
   machine-executor:
@@ -69,8 +73,7 @@ jobs:
       - setup_repos
       - build
       - store_artifacts:
-          path: out/target/product/ginkgo/OrangeFox-R11.0_1-Test-ginkgo.zip
-          destination: OrangeFox-R11.0_1-Test-ginkgo.zip
+          path: out/target/product/ginkgo/upload/
 
 workflows:
   build-with-machine:
