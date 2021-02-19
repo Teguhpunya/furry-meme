@@ -36,9 +36,9 @@ commands:
             cd .. && echo "Current dir = $(pwd)"
             rm -rf bootable/recovery
             rm -rf vendor/recovery
-            git clone --depth=1 https://pop:$GITLAB_PASS@gitlab.com/OrangeFox/Testing/Recovery.git -b $RECOVERY_BRANCH bootable/recovery >/dev/null
+            git clone --depth=1 $URL_RECOVERY -b $RECOVERY_BRANCH bootable/recovery >/dev/null
             git clone --depth=1 $URL_VENDOR -b $VENDOR_BRANCH vendor/recovery >/dev/null
-            git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b wp --depth=1 device/xiaomi/ginkgo
+            git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b test --depth=1 device/xiaomi/ginkgo
   build:
     steps:
       - run:
@@ -56,8 +56,8 @@ executors:
     working_directory: ~/project
     environment:
       DEBIAN_FRONTEND: noninteractive
-      RECOVERY_BRANCH: fox_10.0
-      VENDOR_BRANCH: fox_10.0
+      RECOVERY_BRANCH: fox_9.0
+      VENDOR_BRANCH: master
       TWRP_BRANCH: twrp-10.0
       URL_RECOVERY: https://gitlab.com/OrangeFox/bootable/Recovery.git
       URL_VENDOR: https://gitlab.com/OrangeFox/vendor/recovery.git
