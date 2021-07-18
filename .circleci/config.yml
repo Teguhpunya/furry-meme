@@ -24,7 +24,7 @@ commands:
     steps:
       - run:
           name: Setup repos
-          ## OrangeFox R11.1_04 test
+          ## OrangeFox R11.1_05 test
           command: |
             echo "Current dir = $(pwd)"
             repo init --depth=1 -u https://gitlab.com/Teguhpunya/Manifest.git -b test
