@@ -24,12 +24,12 @@ commands:
     steps:
       - run:
           name: Setup repos
-          ## OrangeFox R11.1_05 test
+          ## OrangeFox R11.1_08 test
           command: |
             echo "Current dir = $(pwd)"
             repo init --depth=1 -u https://gitlab.com/Teguhpunya/Manifest.git -b test
             repo sync -j$(nproc --all) --force-sync >/dev/null
-            git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b testbackup --depth=1 device/xiaomi/ginkgo
+            git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/android_device_xiaomi_ginkgo.git -b test --depth=1 device/xiaomi/ginkgo
 
   build:
     steps:
