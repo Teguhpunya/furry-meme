@@ -43,7 +43,7 @@ commands:
             mkdir -p $MANIFEST_DIR && cd $MANIFEST_DIR
             repo init --depth=1 -u $MIN_MANIFEST -b $TWRP_BRANCH
             echo "-- Syncing the $TWRP_BRANCH minimal manifest repo ..."
-            repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+            repo sync -j$(nproc --all) --force-sync
             patch -p1 < $PATCH_FILE
             cd $MANIFEST_DIR/
             echo "-- Cloning qcom common ..."
