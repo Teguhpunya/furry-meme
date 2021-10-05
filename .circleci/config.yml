@@ -20,14 +20,6 @@ commands:
             git clone https://gitlab.com/teguhpunya-projects/scripts.git --depth=1 --branch circleci
             bash scripts/setup/android_build_env.sh >/dev/null
             bash scripts/setup/install_android_sdk.sh >/dev/null
-            export FOX_BRANCH="fox_10.0"
-            export TWRP_BRANCH="twrp-10.0"
-            export DEVICE_BRANCH="android-10"
-            export BASE_DIR="$PWD"
-            export MANIFEST_DIR="$BASE_DIR/$FOX_BRANCH"
-            export MANIFEST_BUILD_DIR="$MANIFEST_DIR/build"
-            export PATCH_FILE="$BASE_DIR/patch-manifest-$FOX_BRANCH.diff"
-            export MIN_MANIFEST="git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git"
 
   setup_repos:
     steps:
@@ -35,7 +27,7 @@ commands:
           name: Setup repos
           command: |
             echo "Current dir = $(pwd)"
-            mkdir OrangeFox_10
+            mkdir -p OrangeFox_10
             cd OrangeFox_10
             git clone https://gitlab.com/OrangeFox/sync.git
             cd sync
@@ -95,6 +87,15 @@ jobs:
     working_directory: ~/project
     environment:
       DEBIAN_FRONTEND: noninteractive
+      FOX_BRANCH: fox_10.0
+      TWRP_BRANCH: twrp-10.0
+      DEVICE_BRANCH: android-10
+      BASE_DIR: $PWD
+      MANIFEST_DIR: $BASE_DIR/$FOX_BRANCH
+      MANIFEST_BUILD_DIR: $MANIFEST_DIR/build
+      PATCH_FILE: $BASE_DIR/patch-manifest-$FOX_BRANCH.diff
+      MIN_MANIFEST: git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git
+
     steps:
       - checkout
       - check_system
