@@ -37,10 +37,10 @@ commands:
             export PATCH_FILE="$BASE_DIR/sync/patch-manifest-$FOX_BRANCH.diff"
             export MIN_MANIFEST="git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git"            
             echo "-- The new build system will be located in \"$MANIFEST_DIR\""
+            mkdir -p $MANIFEST_DIR && cd $MANIFEST_DIR
             repo init --depth=1 -u $MIN_MANIFEST -b $TWRP_BRANCH
             echo "-- Syncing the $TWRP_BRANCH minimal manifest repo ..."
             repo sync -j$(nproc --all) --force-sync
-            cd $MANIFEST_DIR/
             patch -p1 < $PATCH_FILE
             echo "-- Cloning qcom common ..."
             git clone https://github.com/TeamWin/android_device_qcom_common -b $DEVICE_BRANCH device/qcom/common
