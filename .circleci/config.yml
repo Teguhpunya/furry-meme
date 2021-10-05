@@ -67,7 +67,7 @@ executors:
 
 jobs:
   build-ofox:
-    executor: docker-executor
+    executor: machine-executor
     working_directory: ~/project
     environment:
       DEBIAN_FRONTEND: noninteractive
