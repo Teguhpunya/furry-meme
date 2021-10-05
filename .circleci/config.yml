@@ -38,6 +38,7 @@ commands:
       - run:
           name: Build
           command: |
+            cd sync/fox_10.0
             . build/envsetup.sh
             export LC_ALL="C"
             export ALLOW_MISSING_DEPENDENCIES=true
