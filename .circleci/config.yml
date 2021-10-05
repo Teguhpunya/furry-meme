@@ -17,7 +17,7 @@ commands:
             git config --global user.name "Teguhpunya"
             git config --global credential.helper "cache --timeout=7200"
             echo "git identity setup successfully!"
-            git clone https://gitlab.com/teguhpunya-projects/scripts.git --depth=1 --branch circleci
+            git clone https://github.com/akhilnarang/scripts.git --depth=1 --branch circleci
             bash scripts/setup/android_build_env.sh >/dev/null
             bash scripts/setup/install_android_sdk.sh >/dev/null
 
