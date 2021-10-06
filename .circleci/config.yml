@@ -43,7 +43,7 @@ commands:
             export LC_ALL="C"
             export ALLOW_MISSING_DEPENDENCIES=true
             export FOX_VERSION="R11.1_2"
-            export FOX_BUILD_TYPE="Beta"
+            export FOX_BUILD_TYPE="Test"
             export OF_MAINTAINER="Teguhpunya"
             export FOX_BUILD_DEVICE="ginkgo"
             export FILES="$PWD/out/target/product/ginkgo/OrangeFox-$FOX_VERSION-$FOX_BUILD_TYPE-$FOX_BUILD_DEVICE.zip"
@@ -78,7 +78,7 @@ jobs:
       - setup_repos
       - build
       - store_artifacts:
-          path: out/target/product/ginkgo/upload/
+          path: sync/fox_10.0/out/target/product/ginkgo/upload/
 
 workflows:
   build-orangefox:
