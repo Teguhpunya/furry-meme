@@ -27,31 +27,23 @@ commands:
           name: Setup repos
           command: |
             echo "Current dir = $(pwd)"
-            git clone https://gitlab.com/Teguhpunya/orangefox-sync.git sync
+            git clone https://gitlab.com/OrangeFox/sync.git sync
             cd sync
-            ./get_fox_10.sh
-            cd fox_10.0
+            ./orangefox_sync.sh --branch 10.0 --path ~/fox_10.0
+            cd ~/fox_10.0
             git clone https://gitlab.com/Teguhpunya/ginkgo.git -b fox_10 device/xiaomi/ginkgo
-            rm -rf bootable/recovery
-            git clone --recurse-submodules https://gitlab.com/OrangeFox/bootable/Recovery.git -b $FOX_BRANCH bootable/recovery
-            rm -rf vendor/recovery
-            git clone https://gitlab.com/OrangeFox/vendor/recovery.git -b $FOX_BRANCH vendor/recovery
-
 
   build:
     steps:
       - run:
           name: Build
           command: |
-            cd sync/fox_10.0
+            cd ~/fox_10.0
             . build/envsetup.sh
             export LC_ALL="C"
             export ALLOW_MISSING_DEPENDENCIES=true
-            export FILES="$PWD/out/target/product/ginkgo/OrangeFox-$FOX_VERSION-$FOX_BUILD_TYPE-$FOX_BUILD_DEVICE.zip"
             cp -f $PWD/device/xiaomi/ginkgo/teguhpunya.png $PWD/bootable/recovery/gui/theme/portrait_hdpi/images/Default/About/maintainer.png
-            rm -rf ./out
             source device/xiaomi/ginkgo/vendorsetup.sh
-            make clean
             lunch omni_ginkgo-eng && mka recoveryimage
             BUILDFILE=$(find $(pwd)/out/target/product/ginkgo/OrangeFox* 2>/dev/null)
             UPLOAD_PATH=$(pwd)/out/target/product/ginkgo/upload/
@@ -74,8 +66,8 @@ jobs:
       DEBIAN_FRONTEND: noninteractive
       FOX_BRANCH: fox_10.0
       FOX_VERSION: R11.1
-      FOX_BUILD_TYPE: Stable
-      FOX_VARIANT: A10
+      FOX_BUILD_TYPE: Alpha
+      FOX_VARIANT: A12
       OF_MAINTAINER: Teguhpunya
       FOX_BUILD_DEVICE: ginkgo
     steps:
@@ -85,7 +77,7 @@ jobs:
       - setup_repos
       - build
       - store_artifacts:
-          path: sync/fox_10.0/out/target/product/ginkgo/upload/
+          path: ~/fox_10.0/out/target/product/ginkgo/upload/
 
 workflows:
   build-orangefox:
