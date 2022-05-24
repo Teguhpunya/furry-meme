@@ -24,7 +24,7 @@ commands:
     steps:
       - run:
           name: Setup repos
-          ## OrangeFox R11.1_1 beta
+          ## OrangeFox R11.1_1 Stable
           command: |
             echo "Current dir = $(pwd)"
             repo init --depth=1 -u https://gitlab.com/Teguhpunya/Manifest.git -b test
@@ -39,13 +39,12 @@ commands:
             source build/envsetup.sh
             export LC_ALL="C"
             export ALLOW_MISSING_DEPENDENCIES=true
-            export FOX_VERSION="R11.1"
+            export FOX_VERSION="R11.1_1"
             export FOX_BUILD_TYPE="Stable"
             export OF_MAINTAINER="Teguhpunya"
             export FOX_BUILD_DEVICE="ginkgo"
             export OUT_FILES="$PWD/out/target/product/ginkgo/OrangeFox-$FOX_VERSION-$FOX_BUILD_TYPE-$FOX_BUILD_DEVICE.zip"
             source device/xiaomi/ginkgo/vendorsetup.sh
-            make clean
             lunch omni_ginkgo-eng && mka recoveryimage
             BUILDFILE=$(find $(pwd)/out/target/product/ginkgo/OrangeFox* 2>/dev/null)
             UPLOAD_PATH=$(pwd)/out/target/product/ginkgo/upload/
