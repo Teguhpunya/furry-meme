@@ -28,7 +28,7 @@ commands:
           command: |
             echo "Current dir = $(pwd)"
             repo init --depth=1 -u https://gitlab.com/Teguhpunya/Manifest.git -b test
-            repo sync -j$(nproc --all) --force-sync >/dev/null
+            repo sync -j$(nproc --all) --force-sync --fetch-submodules >/dev/null
             git clone https://pop:$GITLAB_PASS@gitlab.com/Teguhpunya/ginkgo.git -b fox_9.0 --depth=1 device/xiaomi/ginkgo
 
   build:
